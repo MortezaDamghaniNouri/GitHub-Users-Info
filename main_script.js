@@ -4,97 +4,133 @@ function fetch_sender(url){
         .then(response => response.json())
         .then(data => {
 
-            if(data.avatar_url != null){
-                document.getElementById("user_image").src = data.avatar_url;
-
-            }
-            else{
-                document.getElementById("user_image").alt = "image unavailable";
-
-            }
-            if(data.name != null){
-                document.getElementById("user_full_name").innerHTML = data.name;
-
-            }
-            else{
-                document.getElementById("user_full_name").innerHTML = "full name unavailable";
-
-            }
-            if(data.blog != ""){
-
-                let new_child = document.createElement("a");
-                new_child.id = "user_blog_address";
-                new_child.href = data.blog;
-                new_child.innerHTML = data.blog;
-                new_child.target = "_blank";
-                let parent = document.getElementById("user_personal_info");
-                let old_child = document.getElementById("user_blog_address");
-                parent.replaceChild(new_child, old_child);
-
-
-            }
-            else{
+            // Checking if the input username is available or not
+            if(data["message"] != undefined){
                 let new_child = document.createElement("div");
-                new_child.id = "user_blog_address";
-                new_child.innerHTML = "blog address unavailable";
-                let parent = document.getElementById("user_personal_info");
-                let old_child = document.getElementById("user_blog_address");
-                parent.replaceChild(new_child, old_child);
+                new_child.id = "user_unavailable_block";
+                new_child.innerHTML = "Input username is not available!";
+                new_child.style.display = "block";
+                new_child.style.width = "100%";
+                new_child.style.color = "red";
+                new_child.style.textAlign = "center";
+                let button_child = document.getElementById("submit_button");
+                let parent = document.getElementById("search_block");
+                parent.insertBefore(new_child, button_child);
 
 
-
-
-
-            }
-            if(data.location != null){
-                document.getElementById("user_location").innerHTML = data.location;
 
             }
             else{
-                document.getElementById("user_location").innerHTML = "location unavailable";
+                //Removing last user-unavailable message
 
-            }
-            let user_bio_block_element = document.getElementById("user_bio_block");
-            user_bio_block_element.innerHTML = "";
-            if(data.bio != null){
-                let user_bio = data.bio.toString();
-                let bio_line = "";
-                //printing the bio in new lines
-                while(user_bio.search("\n") != -1){
-                    let index = user_bio.search("\n");
-                    for(let i = 0;i <= index;++i){
-                        bio_line += user_bio.charAt(i);
-
-                    }
-                    let new_user_bio = "";
-                    for(let i = index + 1;i < user_bio.length;++i) {
-                        new_user_bio += user_bio.charAt(i);
-
-
-                    }
-                    user_bio = new_user_bio;
-                    let new_child = document.createElement("div");
-                    new_child.innerHTML = bio_line;
-                    bio_line = "";
-                    user_bio_block_element.appendChild(new_child);
-
-
-                }
-                if(user_bio != ""){
-                    let new_child = document.createElement("div");
-                    new_child.innerHTML = user_bio;
-                    user_bio_block_element.appendChild(new_child);
+                if(document.getElementById("user_unavailable_block") != null){
+                    document.getElementById("user_unavailable_block").remove();
 
                 }
 
+                if(data.avatar_url != null){
+                    document.getElementById("user_image").src = data.avatar_url;
+
+                }
+                else{
+                    document.getElementById("user_image").alt = "image unavailable";
+
+                }
+                if(data.name != null){
+                    document.getElementById("user_full_name").innerHTML = data.name;
+
+                }
+                else{
+                    document.getElementById("user_full_name").innerHTML = "full name unavailable";
+
+                }
+                if(data.blog != ""){
+
+                    let new_child = document.createElement("a");
+                    new_child.id = "user_blog_address";
+                    new_child.href = data.blog;
+                    new_child.innerHTML = data.blog;
+                    new_child.target = "_blank";
+                    let parent = document.getElementById("user_personal_info");
+                    let old_child = document.getElementById("user_blog_address");
+                    parent.replaceChild(new_child, old_child);
+
+
+                }
+                else{
+                    let new_child = document.createElement("div");
+                    new_child.id = "user_blog_address";
+                    new_child.innerHTML = "blog address unavailable";
+                    let parent = document.getElementById("user_personal_info");
+                    let old_child = document.getElementById("user_blog_address");
+                    parent.replaceChild(new_child, old_child);
+
+
+
+
+
+                }
+                if(data.location != null){
+                    document.getElementById("user_location").innerHTML = data.location;
+
+                }
+                else{
+                    document.getElementById("user_location").innerHTML = "location unavailable";
+
+                }
+                let user_bio_block_element = document.getElementById("user_bio_block");
+                user_bio_block_element.innerHTML = "";
+                if(data.bio != null){
+                    let user_bio = data.bio.toString();
+                    let bio_line = "";
+                    //printing the bio in new lines
+                    while(user_bio.search("\n") != -1){
+                        let index = user_bio.search("\n");
+                        for(let i = 0;i <= index;++i){
+                            bio_line += user_bio.charAt(i);
+
+                        }
+                        let new_user_bio = "";
+                        for(let i = index + 1;i < user_bio.length;++i) {
+                            new_user_bio += user_bio.charAt(i);
+
+
+                        }
+                        user_bio = new_user_bio;
+                        let new_child = document.createElement("div");
+                        new_child.innerHTML = bio_line;
+                        bio_line = "";
+                        user_bio_block_element.appendChild(new_child);
+
+
+                    }
+                    if(user_bio != ""){
+                        let new_child = document.createElement("div");
+                        new_child.innerHTML = user_bio;
+                        user_bio_block_element.appendChild(new_child);
+
+                    }
+
+                }
+
+                else{
+                    let new_child = document.createElement("div");
+                    new_child.innerHTML = "biography unavailable";
+                    user_bio_block_element.appendChild(new_child);
+
+                }
+
+
+
+
+
+
+
+
+
+
             }
 
-            else{
-                let new_child = document.createElement("div");
-                new_child.innerHTML = "biography unavailable";
-                user_bio_block_element.appendChild(new_child);
-
-            }
 
 
         })
