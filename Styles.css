@@ -1,0 +1,166 @@
+/* This block handles the background image of the webpage and its attributes*/
+body {
+    background-image: url("Background_Image.jpg");
+    background-attachment: fixed;
+    background-size: 100% 100%;
+
+
+}
+
+/* This block handles the styles of the container of the search block and user info block */
+#main_two_blocks_container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 85%;
+
+
+}
+
+
+/* This block handles user information block styles in the main page */
+#user_info_block {
+    display: inline-flex;
+    width: 60%;
+    height: 70%;
+    background: white;
+    border-radius: 24px;
+    flex-wrap: wrap;
+    flex-direction: row;
+
+
+
+
+}
+
+/* This block handles search block styles in the main page */
+#search_block {
+    display: block;
+    width: 25%;
+    height: 70%;
+    background: white;
+    margin-left: 5%;
+    border-radius: 24px;
+
+
+}
+
+/* This block handles the styles of the footer */
+#footer_block {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 15%;
+
+}
+
+/* This block handles the styles of the github mark in the footer */
+#footer_mark {
+    display: block;
+    height: 100%;
+
+
+
+}
+
+/* This block handles the styles of the github logo in the footer */
+#footer_logo {
+    display: block;
+    height: 100%;
+
+
+}
+
+
+/* This block handles the styles of the search bar */
+#search_bar {
+    display: block;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 30%;
+    margin-bottom: 10%;
+    width: 60%;
+
+
+
+
+}
+
+/* This block handles the styles of the submit button */
+#submit_button {
+    display: block;
+    margin-left: 35%;
+    margin-right: 35%;
+    width: 30%;
+    text-align: center;
+    font-size: 80%;
+
+
+}
+
+
+/* This block handles the styles of the user image */
+#user_image {
+    display: block;
+    margin-top: 2%;
+    margin-left: 2%;
+    width: 20%;
+    height: 50%;
+    border-radius: 24px;
+
+
+}
+
+/* This block handles user info styles like name, blog address and country */
+#user_personal_info {
+    display: block;
+    width: 71%;
+    height: 50%;
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-right: 2%;
+    text-align: center;
+
+}
+
+/* This block handles the user biography styles */
+#user_bio_block {
+    display: block;
+    width: 96%;
+    margin-right: 2%;
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-bottom: 2%;
+    height: 38%;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
