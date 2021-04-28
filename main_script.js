@@ -1,6 +1,6 @@
-// This function receives the webpage programmer Github info (Username: Morteza-Damghani-Nouri)
-function developer_profile_info_getter() {
-    fetch("https://api.github.com/users/Morteza-Damghani-Nouri")
+//This function sends fetch requests to get user info
+function fetch_sender(url){
+    fetch(url)
         .then(response => response.json())
         .then(data => {
 
@@ -21,11 +21,29 @@ function developer_profile_info_getter() {
 
             }
             if(data.blog != ""){
-                document.getElementById("user_blog_address").innerHTML = data.blog;
+
+                let new_child = document.createElement("a");
+                new_child.id = "user_blog_address";
+                new_child.href = data.blog;
+                new_child.innerHTML = data.blog;
+                new_child.target = "_blank";
+                let parent = document.getElementById("user_personal_info");
+                let old_child = document.getElementById("user_blog_address");
+                parent.replaceChild(new_child, old_child);
+
 
             }
             else{
-                document.getElementById("user_blog_address").innerHTML = "blog address unavailable";
+                let new_child = document.createElement("div");
+                new_child.id = "user_blog_address";
+                new_child.innerHTML = "blog address unavailable";
+                let parent = document.getElementById("user_personal_info");
+                let old_child = document.getElementById("user_blog_address");
+                parent.replaceChild(new_child, old_child);
+
+
+
+
 
             }
             if(data.location != null){
@@ -37,6 +55,7 @@ function developer_profile_info_getter() {
 
             }
             let user_bio_block_element = document.getElementById("user_bio_block");
+            user_bio_block_element.innerHTML = "";
             if(data.bio != null){
                 let user_bio = data.bio.toString();
                 let bio_line = "";
@@ -78,19 +97,28 @@ function developer_profile_info_getter() {
             }
 
 
-
-
-
-
-    })
+        })
         .catch();
-
 
 
 
 }
 
 
+// This function receives the webpage programmer Github info (Username: Morteza-Damghani-Nouri)
+function developer_profile_info_getter(url) {
+    fetch_sender(url);
+
+}
+
+function button_click_handler(){
+    let username = document.getElementById("search_bar").value;
+    if(username != ""){
+        let url = "https://api.github.com/users/" + username;
+        fetch_sender(url);
+    }
+
+}
 
 
 

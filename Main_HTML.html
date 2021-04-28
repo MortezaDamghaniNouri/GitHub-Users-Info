@@ -7,14 +7,14 @@
 
 
 </head>
-<body onload="developer_profile_info_getter()">
+<body onload="developer_profile_info_getter('https://api.github.com/users/Morteza-Damghani-Nouri')">
 
     <div id="main_two_blocks_container">
         <div id="user_info_block">
             <img id="user_image" />
             <div id="user_personal_info">
                 <div id="user_full_name"></div>
-                <div id="user_blog_address"></div>
+                <a id="user_blog_address" target="_blank"></a>
                 <div id="user_location"></div>
 
             </div>
@@ -31,9 +31,9 @@
 
         <div id="search_block">
 
-            <input id="search_bar" type="text" placeholder="username" />
+            <input id="search_bar" type="text" placeholder="username" value=""/>
             <br />
-            <button id="submit_button">submit</button>
+            <button id="submit_button" onclick="button_click_handler()">submit</button>
 
 
 
