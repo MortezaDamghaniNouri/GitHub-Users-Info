@@ -193,6 +193,11 @@ function fetch_sender(username){
                         document.getElementById("local_storage_message").remove();
 
                     }
+                    // Removing last user-unavailable message
+                    if(document.getElementById("user_unavailable_block") != null){
+                        document.getElementById("user_unavailable_block").remove();
+
+                    }
 
 
                 }
