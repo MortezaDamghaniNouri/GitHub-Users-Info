@@ -1,7 +1,6 @@
 // The local storage of the windows stores in my_local_storage
 let my_local_storage = window.localStorage;
 
-
 // This function prints the user information in the webpage
 function data_printer(data, username, user_type){
     // Removing last user-unavailable local storage messages
@@ -14,7 +13,7 @@ function data_printer(data, username, user_type){
         data = JSON.parse(data);
 
     }
-
+    let user_favorite_language;
     // Checking if the input username is available or not
     if(data["message"] != undefined){
         // Removing last user-unavailable message
@@ -132,6 +131,164 @@ function data_printer(data, username, user_type){
 
         }
 
+        if(user_type == "old"){
+            document.getElementById("user_favorite_language").innerHTML = "Favorite Programming Language(s): " +
+                my_local_storage[username + "_favorite_language"];
+
+        }
+        else{
+            let repositories_url = data.repos_url;
+            fetch(repositories_url)
+                .then(rspn => rspn.json())
+                .then(output => {
+                    let user_repos = []
+                    // Finding repositories with available Language field
+                    for(let i = 0;i < output.length;++i){
+                        if(output[i].language != null){
+                            let temp_array = [];
+                            let temp_date = output[i].pushed_at;
+
+                            // Parsing the pushed_at date
+                            let date = "";
+                            let month = "";
+                            let year = "";
+                            for(let j = 0;j < 4;++j){
+                                year += temp_date.charAt(j);
+
+                            }
+                            year = parseInt(year);
+                            if(temp_date.charAt(5) == '0'){
+                                month += temp_date.charAt(6);
+
+                            }
+                            else{
+                                month += temp_date.charAt(5);
+                                month += temp_date.charAt(6);
+                            }
+                            month = parseInt(month);
+                            if(temp_date.charAt(8) == '0'){
+                                date += temp_date.charAt(9);
+
+                            }
+                            else{
+                                date += temp_date.charAt(8);
+                                date += temp_date.charAt(9);
+                            }
+                            date = parseInt(date);
+                            let temp_date_object = new Date(year, month, date);
+                            temp_array.push(output[i]);
+                            temp_array.push(temp_date_object);
+                            user_repos.push(temp_array);
+
+                        }
+
+                    }
+                    if(user_repos.length == 0){
+                        document.getElementById("user_favorite_language").innerHTML = "Favorite Programming Language(s): " + "-";
+                        // Storing user favorite language in local storage for later reuse
+                        my_local_storage.setItem(username + "_favorite_language", "-");
+
+
+                    }
+                    else{
+                        // Sorting the repositories according to pushed_at date
+                        for(let i = user_repos.length - 1;i >= 1;--i){
+                            for(let j = 0;j < i;++j){
+                                if(user_repos[j][1] > user_repos[j + 1][1]){
+                                    let temp = user_repos[j + 1];
+                                    user_repos[j + 1] = user_repos[j];
+                                    user_repos[j] = temp;
+
+                                }
+
+                            }
+
+                        }
+                        // Finding last recent repositories
+                        let recent_five = [];
+                        // Some users may have less than five repositories, this part of the code is handling this issue
+                        if(user_repos.length < 5){
+                            for(let i = 0;i < user_repos.length;++i){
+                                recent_five.push(user_repos[i]);
+
+                            }
+
+
+                        }
+                        else{
+                            for(let counter = 1;counter <= 5;++counter){
+                                recent_five.push(user_repos[user_repos.length - counter]);
+
+                            }
+
+                        }
+                        // Finding last five repository languages and their number of repetition
+                        let user_top_five_languages = [];
+                        for(let i = 0;i < recent_five.length;++i){
+                            let exist = false;
+                            for(let j = 0;j < user_top_five_languages.length;++j){
+                                if(recent_five[i][0].language == user_top_five_languages[j][0]){
+                                    exist = true;
+                                    break;
+
+
+                                }
+
+                            }
+                            if(!exist){
+                                let temp_array = [];
+                                temp_array.push(recent_five[i][0].language);
+                                temp_array.push(1);
+
+                                for(let j = i + 1;j < recent_five.length;++j){
+                                    if(recent_five[j][0].language == temp_array[0]){
+                                        ++temp_array[1];
+
+                                    }
+
+                                }
+                                user_top_five_languages.push(temp_array);
+
+                            }
+
+                        }
+                        // Sorting user top five languages
+                        for(let i = user_top_five_languages.length - 1;i >= 1;--i){
+                            for(let j = 0;j < i;++j){
+                                if(user_top_five_languages[j][1] > user_top_five_languages[j + 1][1]){
+                                    let temp = user_top_five_languages[j + 1];
+                                    user_top_five_languages[j + 1] = user_top_five_languages[j];
+                                    user_top_five_languages[j] = temp;
+
+                                }
+
+                            }
+
+                        }
+
+
+                        let maximum_count = user_top_five_languages[user_top_five_languages.length - 1][1];
+                        user_favorite_language = user_top_five_languages[user_top_five_languages.length - 1][0];
+                        for(let i = 0;i < user_top_five_languages.length - 1;++i){
+                            if(user_top_five_languages[i][1] == maximum_count){
+                                user_favorite_language += ", " + user_top_five_languages[i][0];
+
+                            }
+
+
+                        }
+                        // Adding user favorite language(s) to HTML
+                        document.getElementById("user_favorite_language").innerHTML = "Favorite Programming Language(s): " + user_favorite_language;
+                        // Storing user favorite language in local storage for later reuse
+                        my_local_storage.setItem(username + "_favorite_language", user_favorite_language);
+
+                    }
+
+
+                });
+
+        }
+
     }
     if(user_type == "new"){
         my_local_storage.setItem(username, JSON.stringify(data));
@@ -146,6 +303,7 @@ function fetch_sender(username){
     // Checking if the input username information is available in the local storage or not
     if(my_local_storage[username] != undefined){
         data_printer(my_local_storage[username], username, "old");
+        // Checking if the input username is available in Github or not
         if(JSON.parse(my_local_storage[username]).message != undefined){
             let parent = document.getElementById("search_block");
             let new_child = document.createElement("div");
@@ -188,6 +346,7 @@ function fetch_sender(username){
                     document.getElementById("user_blog_address").innerHTML = "";
                     document.getElementById("user_location").innerHTML = "";
                     document.getElementById("user_bio_block").innerHTML = "";
+                    document.getElementById("user_favorite_language").innerHTML = "";
                     // Removing last user-unavailable local storage messages
                     if(document.getElementById("local_storage_message") != null){
                         document.getElementById("local_storage_message").remove();
@@ -215,6 +374,7 @@ function developer_profile_info_getter(username) {
 
 }
 
+// This function is a handler for Submit button click event
 function button_click_handler(){
     let username = document.getElementById("search_bar").value;
     if(username != ""){
